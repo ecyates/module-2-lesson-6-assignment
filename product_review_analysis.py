@@ -18,9 +18,21 @@ def keywordHighlighter(reviews):
     for review in reviews:
         # For each keyword
         for word in keywords:
-            # If the word is in the review, replace is with the uppercase version and add to new list
-            if word in review:
-                reviews_upper.append(review.replace(word, word.upper()))
+            # Check if the word is in there (regardless of case)
+            index = review.casefold().find(word)
+            # Create a new review string
+            new_review = ""
+            # If the word is the first word, the new string is the uppercase word + the rest of the review
+            if index == 0:
+                new_review = word.upper() + review[index+len(word):len(review)+1]
+            # If the word is found later, the new string is the beginning + the uppercase word + the ending
+            elif index > 0:
+                new_review = review[0:index] + word.upper() + review[index+len(word):len(review)+1]
+            # If the word is not found, continue
+            else: pass
+            # If the new string was created, add it to the uppercase list
+            if new_review != "":
+                reviews_upper.append(new_review)
     return reviews_upper
 
 # Take the reviews
